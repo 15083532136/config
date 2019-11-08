@@ -1,0 +1,33 @@
+#启动端口
+server:
+  port: 8081
+#配置数据库的数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springcloud?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root
+  application:
+    name: user-service
+mybatis:
+  #mapper的xml文件路径
+  mapper-locations: classpath:mappers/*.xml
+  #实体类
+  type-aliases-package: cn.itcast.pojo
+  #驼峰命名
+  configuration:
+    map-underscore-to-camel-case: true
+# 提供者服务名
+# 客户端在注册时就会使用自己的ip地址而不是主机名(客户端自身加)
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1 # ip地址 固定上报一个IP地址给eureka server
+    #表示eureka client发送心跳给server端的频率
+    lease-renewal-interval-in-seconds: 1
+    instance-id: ${spring.application.name}:${eureka.instance.ip-address}:${spring.application.instance_id:${server.port}}
+  client:
+    service-url:
+      # eureka服务器的地址
+      defaultZone: http://localhost:10086/eureka/,http://localhost:10087/eureka/,http://localhost:10088/eureka/
